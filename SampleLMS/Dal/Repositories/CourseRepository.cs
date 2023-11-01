@@ -37,6 +37,7 @@ namespace SampleLMS.Dal.Repositories
         {
             List<Course> courses = await dbContext.Courses
             .Include(c => c.Categories) // Include the Category entity
+            .Include(m => m.Modules)
             .ToListAsync();
 
             return courses;
@@ -44,7 +45,9 @@ namespace SampleLMS.Dal.Repositories
 
         public async Task<Course?> GetSingleCourse(int courseId)
         {
-            return await dbContext.Courses.Include(c => c.Categories)
+            return await dbContext.Courses
+                .Include(c => c.Categories)
+                .Include(m => m.Modules)
                 .FirstOrDefaultAsync(c => c.CourseId == courseId);
         }
 
