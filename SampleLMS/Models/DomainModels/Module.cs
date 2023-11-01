@@ -16,6 +16,6 @@ namespace SampleLMS.Models.DomainModels
         // public IFormFile? UploadedFile { get; set; } // This is for handling file uploads.
         
         public string? FilePath { get; set; } // Store the path to the uploaded file on the server.
-        public ICollection<CourseModule>? CourseModules { get; set; }
+        public ICollection<Course>? Courses { get; set; }
     }
 }

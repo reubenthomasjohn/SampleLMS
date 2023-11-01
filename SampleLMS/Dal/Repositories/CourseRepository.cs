@@ -36,8 +36,7 @@ namespace SampleLMS.Dal.Repositories
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
             List<Course> courses = await dbContext.Courses
-            .Include(c => c.CourseCategories) // Include the join table
-            .ThenInclude(cc => cc.Category)    // Include the Category entity
+            .Include(c => c.Categories) // Include the Category entity
             .ToListAsync();
 
             return courses;
@@ -45,8 +44,7 @@ namespace SampleLMS.Dal.Repositories
 
         public async Task<Course?> GetSingleCourse(int courseId)
         {
-            return await dbContext.Courses.Include(c => c.CourseCategories)
-                .ThenInclude(cc => cc.Category)
+            return await dbContext.Courses.Include(c => c.Categories)
                 .FirstOrDefaultAsync(c => c.CourseId == courseId);
         }
 

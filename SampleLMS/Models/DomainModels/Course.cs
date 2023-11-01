@@ -14,8 +14,8 @@ namespace SampleLMS.Models.DomainModels
         public TimeSpan Duration { get; set; } = default;
 
         // Navigation Properties
-        public ICollection<CourseCategory>? CourseCategories { get; set; }
-        public ICollection<CourseModule>? CourseModules { get; set; }
+        public ICollection<Category>? Categories { get; set; }
+        public ICollection<Module>? Modules { get; set; }
 
     }
 }
