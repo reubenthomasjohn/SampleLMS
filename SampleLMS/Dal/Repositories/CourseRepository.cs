@@ -35,25 +35,31 @@ namespace SampleLMS.Dal.Repositories
 
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            return await dbContext.Courses.Include(x => x.Modules).ToListAsync();  
+            List<Course> courses = await dbContext.Courses
+            .Include(c => c.CourseCategories) // Include the join table
+            .ThenInclude(cc => cc.Category)    // Include the Category entity
+            .ToListAsync();
+
+            return courses;
         }
 
         public async Task<Course?> GetSingleCourse(int courseId)
         {
-            return await dbContext.Courses.Include(x => x.Modules).FirstOrDefaultAsync(x => x.Id == courseId);
+            return await dbContext.Courses.Include(c => c.CourseCategories)
+                .ThenInclude(cc => cc.Category)
+                .FirstOrDefaultAsync(c => c.CourseId == courseId);
         }
 
         public async Task<Course?> UpdateCourse(Course updatedCourse)
         {
-            var existingCourse = await dbContext.Courses.Include(x => x.Modules)
-                .FirstOrDefaultAsync(x => x.Id == updatedCourse.Id);
+            var existingCourse = await dbContext.Courses
+                .FirstOrDefaultAsync(x => x.CourseId == updatedCourse.CourseId);
 
             if (existingCourse is not null)
             {
-                existingCourse.Id = updatedCourse.Id;
+                existingCourse.CourseId = updatedCourse.CourseId;
                 existingCourse.Title = updatedCourse.Title;
                 existingCourse.Description = updatedCourse.Description;
-                existingCourse.CategoriesList = updatedCourse.CategoriesList;
                 existingCourse.Duration = updatedCourse.Duration;
 
                 await dbContext.SaveChangesAsync();
