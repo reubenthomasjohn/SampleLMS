@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SampleLMS.Data;
 
 #nullable disable
 
 namespace SampleLMS.Data.Migrations
 {
     [DbContext(typeof(CourseDbContext))]
-    [Migration("20231101111134_SeedingDBWithCategories")]
-    partial class SeedingDBWithCategories
+    [Migration("20231102114437_UpdatingModels2")]
+    partial class UpdatingModels2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,15 +150,35 @@ namespace SampleLMS.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
 
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Duration")
+                    b.Property<TimeSpan?>("Duration")
+                        .IsRequired()
                         .HasColumnType("time");
+
+                    b.Property<string>("FeaturedImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Heading")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlHandle")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseId");
@@ -168,16 +189,28 @@ namespace SampleLMS.Data.Migrations
                         new
                         {
                             CourseId = 1,
-                            Description = "Docker is a containerization tool",
+                            Author = "",
+                            Content = "aaaaaaaaaaaabbbbbbbccccccccc",
+                            Description = "Docker is a containerization tool, used by all kinds of engineers.",
                             Duration = new TimeSpan(0, 2, 30, 0, 0),
-                            Title = "Docker"
+                            FeaturedImageUrl = "",
+                            Heading = "Docker",
+                            PublishedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Docker101",
+                            UrlHandle = ""
                         },
                         new
                         {
                             CourseId = 2,
+                            Author = "",
+                            Content = "aaaaaaaaaaaabbbbbbbccccccccc",
                             Description = "Kubernetes is a container orchestration tool",
                             Duration = new TimeSpan(0, 5, 30, 0, 0),
-                            Title = "Kubernetes"
+                            FeaturedImageUrl = "",
+                            Heading = "Kubernetes",
+                            PublishedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Kubernetes101",
+                            UrlHandle = ""
                         });
                 });
 

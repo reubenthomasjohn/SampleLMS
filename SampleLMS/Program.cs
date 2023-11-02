@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SampleLMS;
 using SampleLMS.Dal.Interfaces;
+using SampleLMS.Dal.Repositories;
+using SampleLMS.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnect
 );
 
 builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
+builder.Services.AddScoped<IImageInterface, CloudinaryImageRepository>();
+builder.Services.AddScoped<ICourseInterface, CourseRepository>();
 
 var app = builder.Build();
 
@@ -22,6 +25,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//app.Services.InitializeDb();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

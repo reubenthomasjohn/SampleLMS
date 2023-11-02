@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SampleLMS.Models.DomainModels;
 
-namespace SampleLMS
+namespace SampleLMS.Data
 {
     public class CourseDbContext : DbContext
     {
-        public CourseDbContext(DbContextOptions<CourseDbContext> options) 
+        public CourseDbContext(DbContextOptions<CourseDbContext> options)
             : base(options) { }
 
         public DbSet<Course> Courses => Set<Course>();
@@ -94,8 +94,10 @@ namespace SampleLMS
             Course courseDocker = new Course
             {
                 CourseId = 1,
-                Title = "Docker",
-                Description = "Docker is a containerization tool",
+                Heading = "Docker",
+                Title = "Docker101",
+                Content = "aaaaaaaaaaaabbbbbbbccccccccc",
+                Description = "Docker is a containerization tool, used by all kinds of engineers.",
                 Duration = TimeSpan.FromHours(2.5),
                 //Categories = new List<Category>
                 //{
@@ -113,7 +115,9 @@ namespace SampleLMS
             Course courseK8s = new Course
             {
                 CourseId = 2,
-                Title = "Kubernetes",
+                Heading = "Kubernetes",
+                Title = "Kubernetes101",
+                Content = "aaaaaaaaaaaabbbbbbbccccccccc",
                 Description = "Kubernetes is a container orchestration tool",
                 Duration = TimeSpan.FromHours(5.5),
                 //Categories = new List<Category>

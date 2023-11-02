@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SampleLMS.styles.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
 </head>
 <body>
     <header>
@@ -22,14 +23,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Categories
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="List">View Categories</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Add">Create a Category</a></li>
+                                    @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Courses
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="List">View Courses</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Add">Create a Course</a></li>
                                     @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
                                 </ul>
                             </div>

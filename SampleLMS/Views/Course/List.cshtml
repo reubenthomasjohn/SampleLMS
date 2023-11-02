@@ -1,0 +1,62 @@
+﻿@model List<SampleLMS.Models.DTOs.Course.ListCoursesViewModel>
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+	<div class="container">
+		<h1>Show All Courses - Admin Functionality</h1>
+	</div>
+</div>
+
+<div class="container py-5">
+	@if (Model != null && Model.Any())
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Course Id</th>
+					<th>Heading</th>
+					<th>Description</th>
+					@*<th>Display Name</th>*@
+					<th> </th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var course in Model)
+				{
+					<tr>
+						<td>@course.CourseId</td>
+						<td>@course.Heading</td>
+						<td>@course.Description</td>
+						@*<td>@tag.DisplayName</td>*@
+						<td>
+							<a asp-area="" asp-controller="Course"
+								asp-action="CourseDetailedView"
+								asp-route-id="@course.CourseId">
+								View Course Details
+							</a>
+						</td>
+						<td>
+							<a asp-area="" asp-controller="Course"
+								asp-action="Edit"
+								asp-route-id="@course.CourseId">
+								Edit
+							</a>
+						</td>
+						<td>
+							<a asp-area="" asp-controller="Course"
+								asp-action="DeleteFromListPage"
+					   asp-route-id="@course.CourseId">
+										Delete
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+	else
+	{
+		<p>No categories found!</p>
+	}
+</div>

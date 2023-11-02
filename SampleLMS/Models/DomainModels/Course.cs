@@ -6,12 +6,18 @@ namespace SampleLMS.Models.DomainModels
     {
         [Key] 
         public int CourseId { get; set; }
-        [Required]
+		public string? Heading { get; set; } = string.Empty;
+		[Required]
         public string Title { get; set; } = string.Empty;
         [Required]
-        public string Description { get; set; } = string.Empty;
-        [Required]
-        public TimeSpan Duration { get; set; } = default;
+		public string? Content { get; set; } = string.Empty;
+		public string Description { get; set; } = string.Empty;
+		public string? FeaturedImageUrl { get; set; } = string.Empty;
+		public string? UrlHandle { get; set; } = string.Empty;
+		public DateTime PublishedDate { get; set; } = default;
+		public string? Author { get; set; } = string.Empty;
+		[Required]
+        public TimeSpan? Duration { get; set; } = default;
 
         // Navigation Properties
         public ICollection<Category>? Categories { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SampleLMS.Data;
 using SampleLMS.Models.DomainModels;
 
 namespace SampleLMS.Dal.Interfaces

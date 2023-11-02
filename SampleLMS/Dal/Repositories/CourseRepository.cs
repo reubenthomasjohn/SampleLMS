@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SampleLMS.Dal.Interfaces;
+using SampleLMS.Data;
 using SampleLMS.Models.DomainModels;
 
 namespace SampleLMS.Dal.Repositories
@@ -12,14 +13,14 @@ namespace SampleLMS.Dal.Repositories
         {
             this.dbContext = dbContext;
         }
-        public async Task<Course> CreateCourse(Course course)
+        public async Task<Course> CreateCourseAsync(Course course)
         {
             await dbContext.Courses.AddAsync(course);
             await dbContext.SaveChangesAsync();
             return course;
         }
 
-        public async Task<Course?> DeleteCourse(int id)
+		public async Task<Course?> DeleteCourseAsync(int id)
         {
             var existingCourse = await dbContext.Courses.FindAsync(id);
 
@@ -33,7 +34,7 @@ namespace SampleLMS.Dal.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<Course>> GetAllCourses()
+        public async Task<IEnumerable<Course>> GetAllCoursesAsync()
         {
             List<Course> courses = await dbContext.Courses
             .Include(c => c.Categories) // Include the Category entity
@@ -43,15 +44,20 @@ namespace SampleLMS.Dal.Repositories
             return courses;
         }
 
-        public async Task<Course?> GetSingleCourse(int courseId)
+		public async Task<Course?> GetByUrlHandleAsync(string urlHandle)
+		{
+			return await dbContext.Courses.Include(x => x.Categories)
+                .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+		}
+
+		public async Task<Course?> GetSingleCourseAsync(int courseId)
         {
             return await dbContext.Courses
                 .Include(c => c.Categories)
                 .Include(m => m.Modules)
                 .FirstOrDefaultAsync(c => c.CourseId == courseId);
         }
-
-        public async Task<Course?> UpdateCourse(Course updatedCourse)
+		public async Task<Course?> UpdateCourseAsync(Course updatedCourse)
         {
             var existingCourse = await dbContext.Courses
                 .FirstOrDefaultAsync(x => x.CourseId == updatedCourse.CourseId);
@@ -62,11 +68,15 @@ namespace SampleLMS.Dal.Repositories
                 existingCourse.Title = updatedCourse.Title;
                 existingCourse.Description = updatedCourse.Description;
                 existingCourse.Duration = updatedCourse.Duration;
+                existingCourse.Author = updatedCourse.Author;
+                existingCourse.PublishedDate = updatedCourse.PublishedDate;
+                existingCourse.UrlHandle = updatedCourse.UrlHandle;
 
                 await dbContext.SaveChangesAsync();
                 return existingCourse;
             }
             return null;
         }
-    }
+
+	}
 }
