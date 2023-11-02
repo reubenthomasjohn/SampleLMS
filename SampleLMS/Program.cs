@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SampleLMS;
+using SampleLMS.Dal.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CourseDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnectionString"))
 );
+
+builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
 
 var app = builder.Build();
 

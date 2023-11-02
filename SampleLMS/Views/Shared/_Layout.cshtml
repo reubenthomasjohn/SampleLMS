@@ -22,19 +22,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Categories
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="List">View Categories</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Add">Create a Category</a></li>
+                                    @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
+                                </ul>
+                            </div>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Categories
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="List">View all Categories</a>
-                            <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Add">Add a Category</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </nav>

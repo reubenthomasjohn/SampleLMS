@@ -1,5 +1,4 @@
-﻿@using SampleLMS.Models.DomainModels;
-@model List<Category>
+﻿@model List<SampleLMS.Models.DomainModels.Category>
 @{
 }
 
@@ -30,9 +29,17 @@
 						<td>@category.Name</td>
 						@*<td>@tag.DisplayName</td>*@
 						<td>
-							<a asp-area="" asp-controller="AdminTags"
-					   asp-action="Edit"
-					   asp-route-id="@category.CategoryId">Edit</a>
+							<a asp-area="" asp-controller="Category"
+							   asp-action="Edit"
+							   asp-route-id="@category.CategoryId">Edit
+							</a>
+						</td>
+						<td>
+							<a asp-area="" asp-controller="Category"
+								asp-action="DeleteFromListPage"
+							   asp-route-id="@category.CategoryId">
+										Delete
+							</a>
 						</td>
 					</tr>
 				}

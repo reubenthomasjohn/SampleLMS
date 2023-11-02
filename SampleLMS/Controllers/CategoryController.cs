@@ -80,8 +80,9 @@ namespace SampleLMS.Controllers
             var updatedTag = await _categoryRepository.UpdateAsync(tag);
             if (updatedTag != null)
             {
-                // show success notif
-            }
+				// show success notif
+				return RedirectToAction("List");
+			}
             else
             {
                 // show error notif
@@ -90,7 +91,7 @@ namespace SampleLMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(EditCategoryRequest editCategoryRequest)
+        public async Task<IActionResult> DeleteFromUpdatePage(EditCategoryRequest editCategoryRequest)
         {
             var deletedTag = await _categoryRepository.DeleteAsync(editCategoryRequest.Id);
 
@@ -106,16 +107,33 @@ namespace SampleLMS.Controllers
             }
         }
 
-        //private void ValidateAddCategoryRequest(AddCategoryRequest addCategoryRequest)
-        //{
-        //    if (addCategoryRequest.Name is not null)
-        //    {
-        //        if (addCategoryRequest.Name == addCategoryRequest.Name)
-        //        {
-        //            ModelState.AddModelError("Name", "The Name cannot be the same as _Name");
-        //        }
-        //    }
-        //}
-    }
+		[HttpGet]
+		public async Task<IActionResult> DeleteFromListPage(int id)
+		{
+            var existingCategory = await _categoryRepository.GetAsync(id);
+            if (existingCategory != null)
+            {
+				existingCategory = await _categoryRepository.DeleteAsync(id);
+				return RedirectToAction("List");
+			}
+
+			else
+			{
+				//show error notification
+				return RedirectToAction("List");
+			}
+		}
+
+		//private void ValidateAddCategoryRequest(AddCategoryRequest addCategoryRequest)
+		//{
+		//    if (addCategoryRequest.Name is not null)
+		//    {
+		//        if (addCategoryRequest.Name == addCategoryRequest.Name)
+		//        {
+		//            ModelState.AddModelError("Name", "The Name cannot be the same as _Name");
+		//        }
+		//    }
+		//}
+	}
 }
 
