@@ -22,12 +22,12 @@ namespace SampleLMS.Dal.Interfaces
 
         public async Task<Category?> DeleteAsync(int id)
         {
-            var existingTag = await dbContext.Categories.FindAsync(id);
-            if (existingTag != null)
+            var existingCategory = await dbContext.Categories.FindAsync(id);
+            if (existingCategory != null)
             {
-                dbContext.Categories.Remove(existingTag);
+                dbContext.Categories.Remove(existingCategory);
                 await dbContext.SaveChangesAsync();
-                return existingTag;
+                return existingCategory;
             }
             return null;
         }
@@ -53,15 +53,13 @@ namespace SampleLMS.Dal.Interfaces
 
         public async Task<Category?> UpdateAsync(Category category)
         {
-            var existingTag = await dbContext.Categories.FindAsync(category.CategoryId);
+            var existingCategory = await dbContext.Categories.FindAsync(category.CategoryId);
 
-            if (existingTag != null)
+            if (existingCategory != null)
             {
-                existingTag.Name = category.Name;
-
+                existingCategory.Name = category.Name;
                 await dbContext.SaveChangesAsync();
-
-                return existingTag;
+                return existingCategory;
             }
 
             return null;

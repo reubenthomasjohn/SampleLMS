@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SampleLMS.Dal.Interfaces;
 using SampleLMS.Dal.Repositories;
@@ -12,9 +13,28 @@ builder.Services.AddDbContext<CourseDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnectionString"))
 );
 
-builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
+builder.Services.AddDbContext<AuthDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnectionString"))
+);
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+
 builder.Services.AddScoped<IImageInterface, CloudinaryImageRepository>();
 builder.Services.AddScoped<ICourseInterface, CourseRepository>();
+builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
+builder.Services.AddScoped<IModuleInterface, ModuleRepository>();
 
 var app = builder.Build();
 

@@ -65,12 +65,17 @@ namespace SampleLMS.Dal.Repositories
             if (existingCourse is not null)
             {
                 existingCourse.CourseId = updatedCourse.CourseId;
+                existingCourse.Heading = updatedCourse.Heading;
                 existingCourse.Title = updatedCourse.Title;
+                existingCourse.Content = updatedCourse.Content;
                 existingCourse.Description = updatedCourse.Description;
-                existingCourse.Duration = updatedCourse.Duration;
-                existingCourse.Author = updatedCourse.Author;
-                existingCourse.PublishedDate = updatedCourse.PublishedDate;
+                existingCourse.FeaturedImageUrl = updatedCourse.FeaturedImageUrl;
                 existingCourse.UrlHandle = updatedCourse.UrlHandle;
+                existingCourse.PublishedDate = updatedCourse.PublishedDate;
+                existingCourse.Author = updatedCourse.Author;
+                existingCourse.Duration = updatedCourse.Duration;
+                existingCourse.Categories = updatedCourse.Categories;
+                existingCourse.Modules = updatedCourse.Modules; 
 
                 await dbContext.SaveChangesAsync();
                 return existingCourse;

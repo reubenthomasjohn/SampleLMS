@@ -6,12 +6,12 @@ namespace SampleLMS.Dal.Interfaces
     {
         Task<IEnumerable<Module>> GetAllModulesAsync();
         Task<IEnumerable<Module>> GetAllModulesByCategory(Category category);
-        Task<IEnumerable<Module>> GetAllModulesByCourse(Course course);
+        Task<IEnumerable<Module>> GetAllModulesForCourse(Course course);
 
         Task<Module?> GetSingleModuleAsync(int id);
         Task<Module> AddModuleAsync(Module module);
         Task<Module?> UpdateModuleAsync(Module module);
 
-        Task<Module?> DeleteMoudleAsync(int id);
+        Task<Module?> DeleteModuleAsync(int id);
     }
 }

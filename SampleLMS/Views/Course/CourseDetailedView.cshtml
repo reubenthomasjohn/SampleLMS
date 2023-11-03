@@ -8,8 +8,8 @@
 		<div class="col-12 col-lg-6">
 			@if (Model != null)
 			{
-				<h2 class="mb-3">@Model.Heading</h2>
-				<h1 class="mb-3">@Model.Description</h1>
+				<h1 class="mb-3">@Model.Heading</h1>
+				<h2 class="mb-3">@Model.Description</h2>
 
 				<div class="d-flex justify-content-between mb-3">
 					<span class="text-secondary">@Model.Author</span>
@@ -28,18 +28,17 @@
 				<img src="https://source.unsplash.com/random/900x600?sig=1" class="d-block img-fluid mb-3" />
 
 				<div class="mb-3 blog-details-content">
-					@Html.Raw(@Model.Content)
+					<h3>@Html.Raw(@Model.Content)</h3>
 				</div>
 
+				<h3>Course Modules</h3>
 				<div>
 					@foreach (var module in Model.Modules)
 					{
 						<div class="card">
 							<div class="card-header">
 								<h5>@module.ModuleId</h5>
-								{
 									@module.ModuleName
-								}
 							</div>
 						</div>
 					}					

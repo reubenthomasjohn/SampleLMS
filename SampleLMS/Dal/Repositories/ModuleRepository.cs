@@ -1,43 +1,85 @@
-﻿using SampleLMS.Dal.Interfaces;
+﻿using CloudinaryDotNet;
+using Microsoft.EntityFrameworkCore;
+using SampleLMS.Dal.Interfaces;
+using SampleLMS.Data;
 using SampleLMS.Models.DomainModels;
 
 namespace SampleLMS.Dal.Repositories
 {
     public class ModuleRepository : IModuleInterface
     {
-        public Task<Module> AddModuleAsync(Module module)
+        private readonly CourseDbContext dbContext;
+
+        public ModuleRepository(CourseDbContext dbContext)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
+        }
+        public async Task<Module> AddModuleAsync(Module module)
+        {
+            await dbContext.Modules.AddAsync(module);
+            await dbContext.SaveChangesAsync();
+            return module;
         }
 
-        public Task<Module?> DeleteMoudleAsync(int id)
+        public async Task<Module?> DeleteModuleAsync(int id)
         {
-            throw new NotImplementedException();
+            var existingModule = await dbContext.Modules.FindAsync(id);
+            if (existingModule != null)
+            {
+                dbContext.Modules.Remove(existingModule);
+                await dbContext.SaveChangesAsync();
+                return existingModule;
+            }
+            return null;
         }
 
-        public Task<IEnumerable<Module>> GetAllModulesAsync()
+        public async Task<IEnumerable<Module>> GetAllModulesAsync()
         {
-            throw new NotImplementedException();
+            return await dbContext.Modules.ToListAsync();
         }
 
-        public Task<IEnumerable<Module>> GetAllModulesByCategory(Category category)
+        public async Task<IEnumerable<Module>> GetAllModulesByCategory(Category category)
         {
             throw new NotImplementedException();
+            //var categoryId = category.CategoryId;
+            //var modulesForCategory = await dbContext.Modules
+            //                    .Where(c => c.Course.Any(category => category.CategoryId == categoryId))
+            //                    .ToListAsync();
+            //return modulesForCategory;
         }
 
-        public Task<IEnumerable<Module>> GetAllModulesByCourse(Course course)
+        public async Task<IEnumerable<Module>> GetAllModulesForCourse(Course course)
         {
-            throw new NotImplementedException();
+            var courseId = course.CourseId;
+            var modulesForCourse = await dbContext.Modules
+                                .Where(c => c.Courses.Any(course => course.CourseId == courseId))
+                                .ToListAsync();
+            return modulesForCourse;
         }
 
-        public Task<Module?> GetSingleModuleAsync(int id)
+        public async Task<Module?> GetSingleModuleAsync(int id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Modules.FirstOrDefaultAsync(x => x.ModuleId == id);
         }
 
-        public Task<Module?> UpdateModuleAsync(Module module)
+        public async Task<Module?> UpdateModuleAsync(Module module)
         {
-            throw new NotImplementedException();
+            var existingModule = await dbContext.Modules.FindAsync(module.ModuleId);
+
+            if (existingModule != null)
+            {
+                existingModule.ModuleId = module.ModuleId;
+                existingModule.ModuleName = module.ModuleName;
+                existingModule.ModuleContent = module.ModuleContent;
+                existingModule.ContentType = module.ContentType;
+                existingModule.FilePath = module.FilePath;
+
+                await dbContext.SaveChangesAsync();
+
+                return existingModule;
+            }
+
+            return null;
         }
     }
 }

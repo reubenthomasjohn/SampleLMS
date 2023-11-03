@@ -70,15 +70,15 @@ namespace SampleLMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditCategoryRequest editCategoryRequest)
         {
-            var tag = new Category
+            var category = new Category
             {
                 CategoryId = editCategoryRequest.Id,
                 Name = editCategoryRequest.Name,
                 //DisplayName = editTagRequest.DisplayName,
             };
 
-            var updatedTag = await _categoryRepository.UpdateAsync(tag);
-            if (updatedTag != null)
+            var updatedCategory = await _categoryRepository.UpdateAsync(category);
+            if (updatedCategory != null)
             {
 				// show success notif
 				return RedirectToAction("List");
@@ -93,9 +93,9 @@ namespace SampleLMS.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFromUpdatePage(EditCategoryRequest editCategoryRequest)
         {
-            var deletedTag = await _categoryRepository.DeleteAsync(editCategoryRequest.Id);
+            var deletedCategory = await _categoryRepository.DeleteAsync(editCategoryRequest.Id);
 
-            if (deletedTag != null)
+            if (deletedCategory != null)
             {
                 // show success notif
                 return RedirectToAction("List");

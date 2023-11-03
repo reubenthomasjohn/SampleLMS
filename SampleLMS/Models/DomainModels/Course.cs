@@ -22,6 +22,8 @@ namespace SampleLMS.Models.DomainModels
         // Navigation Properties
         public ICollection<Category>? Categories { get; set; }
         public ICollection<Module>? Modules { get; set; }
+        public ICollection<Instructor> Instructors { get; set; } = new List<Instructor>();
+        public ICollection<Enrollments> Enrollments { get; set; } = new List<Enrollments>();
 
     }
 }
