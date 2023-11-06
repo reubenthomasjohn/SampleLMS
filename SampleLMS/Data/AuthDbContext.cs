@@ -11,15 +11,15 @@ namespace SampleLMS.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Seed Roles (User, Admin, SuperAdmin)
+            // Seed Roles (Admin, Instructor, Student)
 
-            var adminRoleId = "b21424da-6e03-4629-b7ad-c1b7eba39106";
-            var instructorRoleId = "3d101212 - 2d2f - 4fa4 - bf24 - 19d52df451bb";
-            var studentRoleId = "56c74461-a068-488e-99a5-2dab66c940c8";
+            var adminRoleId = "15428a96-ca04-4bec-9a65-433be902df74";
+            var instructorRoleId = "99dcdbe9-f224-488f-aaf4-564dd053d0cd";
+            var studentRoleId = "5ed18f35-4e37-428a-b5fa-fe3fd09411d1";
 
             var roles = new List<IdentityRole>
             {
@@ -27,9 +27,9 @@ namespace SampleLMS.Data
                 {
                     Name = "Admin",
                     NormalizedName = "Admin",
-                    Id = instructorRoleId,
-                    ConcurrencyStamp = instructorRoleId
-                },
+                    Id = adminRoleId,
+                    ConcurrencyStamp = adminRoleId
+				},
                 new IdentityRole
                 {
                     Name = "Instructor",
@@ -48,12 +48,12 @@ namespace SampleLMS.Data
 
             builder.Entity<IdentityRole>().HasData(roles);
 
-            // Seed SuperAdminUser
-            var adminUserId = "a7822acd-9f85-4aca-8183-5d00ebcf7b34";
-            var adminUser = new Instructor
+            // Seed AdminUser
+            var adminUserId = "4b00b78c-ddc0-43e4-b026-a6ac5e76c6e3";
+            var adminUser = new IdentityUser
             {
-                FirstName = "Reuben",
-                LastName = "Thomas",
+                //FirstName = "Reuben",
+                //LastName = "Thomas",
                 UserName = "superadmin@bloggie.com",
                 Email = "superadmin@bloggie.com",
                 NormalizedEmail = "superadmin@bloggie.com".ToUpper(),
@@ -81,7 +81,7 @@ namespace SampleLMS.Data
                 },
                 new IdentityUserRole<string>
                 {
-                    RoleId = instructorRoleId,
+                    RoleId = studentRoleId,
                     UserId = adminUserId
                 }
             };

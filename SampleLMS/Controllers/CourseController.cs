@@ -116,7 +116,7 @@ namespace SampleLMS.Controllers
 		{
 
             // map view model back to domain model
-            var course = new Course
+            var updatedCourse = new Course
 			{
 				CourseId = editCourseRequest.CourseId,
 				Heading = editCourseRequest.Heading,
@@ -137,13 +137,19 @@ namespace SampleLMS.Controllers
                 if (int.TryParse(selectedCategory, out var categoryId))
                 {
                     var foundCategory = await categoryRepository.GetAsync(categoryId);
+					
                     if (foundCategory != null)
                     {
                         selectedCategories.Add(foundCategory);
-                    }
+                        //                  var coursesBelongingToCategory = foundCategory.Courses.ToList();
+                        //foreach (var course in coursesBelongingToCategory)
+                        //{
+                        //	if (new { course.CourseId, categoryId } == )
+                        //}
+                    }                   
                 }
             }
-            course.Categories = selectedCategories;
+            updatedCourse.Categories = selectedCategories;
 
             // Map modules into Domain model
             var selectedModules = new List<Module>();
@@ -158,10 +164,10 @@ namespace SampleLMS.Controllers
                     }
                 }
             }
-            course.Modules = selectedModules;
+            updatedCourse.Modules = selectedModules;
 
-            var updatedCourse = await courseRepository.UpdateCourseAsync(course);
-			if (updatedCourse != null)
+            var updatedCourseInRepository = await courseRepository.UpdateCourseAsync(updatedCourse);
+			if (updatedCourseInRepository != null)
 			{
 				// show success notif
 				return RedirectToAction("List");

@@ -145,7 +145,6 @@ namespace SampleLMS.Data
             modelBuilder.Entity<Category>().HasData(
                 categoryContainerization, categoryCloud, categoryDevOps);
 
-
             base.OnModelCreating(modelBuilder);
         }
 

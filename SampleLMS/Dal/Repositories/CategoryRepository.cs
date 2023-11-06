@@ -48,7 +48,9 @@ namespace SampleLMS.Dal.Interfaces
 
         public async Task<Category?> GetAsync(int id)
         {
-            return await dbContext.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
+            return await dbContext.Categories
+                            .Include(c => c.Courses)
+                            .FirstOrDefaultAsync(x => x.CategoryId == id);
         }
 
         public async Task<Category?> UpdateAsync(Category category)

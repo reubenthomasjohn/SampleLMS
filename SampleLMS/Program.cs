@@ -14,8 +14,10 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnect
 );
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("CoursesDbConnectionString"))
-);
+{
+	options.EnableSensitiveDataLogging();
+	options.UseSqlServer(builder.Configuration.GetConnectionString("AuthDbConnectionString"));
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>();
@@ -35,6 +37,7 @@ builder.Services.AddScoped<IImageInterface, CloudinaryImageRepository>();
 builder.Services.AddScoped<ICourseInterface, CourseRepository>();
 builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
 builder.Services.AddScoped<IModuleInterface, ModuleRepository>();
+builder.Services.AddScoped<IUserInterface, UserRepository>();
 
 var app = builder.Build();
 

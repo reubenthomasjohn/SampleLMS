@@ -59,7 +59,9 @@ namespace SampleLMS.Dal.Repositories
 
         public async Task<Module?> GetSingleModuleAsync(int id)
         {
-            return await dbContext.Modules.FirstOrDefaultAsync(x => x.ModuleId == id);
+            return await dbContext.Modules
+                .Include(m => m.Courses)
+                .FirstOrDefaultAsync(x => x.ModuleId == id);
         }
 
         public async Task<Module?> UpdateModuleAsync(Module module)
