@@ -36,7 +36,7 @@ namespace SampleLMS.Controllers
                 if (identityResult.Succeeded)
                 {
                     // assign user role to this newly created user
-                    var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
+                    var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "Student");
 
                     if (roleIdentityResult.Succeeded)
                     {

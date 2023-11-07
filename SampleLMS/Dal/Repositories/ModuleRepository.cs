@@ -74,7 +74,7 @@ namespace SampleLMS.Dal.Repositories
                 existingModule.ModuleName = module.ModuleName;
                 existingModule.ModuleContent = module.ModuleContent;
                 existingModule.ContentType = module.ContentType;
-                existingModule.FilePath = module.FilePath;
+                existingModule.UploadedFilePaths = module.UploadedFilePaths;
 
                 await dbContext.SaveChangesAsync();
 

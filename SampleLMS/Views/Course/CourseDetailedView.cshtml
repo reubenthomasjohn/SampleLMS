@@ -25,20 +25,63 @@
 
 
 				@*<img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />*@
-				<img src="https://source.unsplash.com/random/900x600?sig=1" class="d-block img-fluid mb-3" />
+				{
+					@if (Model.FeaturedImageUrl is not null)
+					{
+						<img src=@Model.FeaturedImageUrl class="d-block img-fluid mb-3" />
+					}
+					else
+					{
+						<img src="https://source.unsplash.com/random/900x600?sig=1" class="d-block img-fluid mb-3" />
+					}
+				}
+				
 
 				<div class="mb-3 blog-details-content">
 					<h3>@Html.Raw(@Model.Content)</h3>
 				</div>
 
-				<h3>Course Modules</h3>
+				@*<h3>Course Modules</h3>
+				<button class="btn btn-primary btn-sm mb-2">Add New Module</button>*@
+
+				<div class="row">
+					<div class="col">
+						<h3>Course Modules</h3>
+					</div>
+					<div class="col-auto">
+						<a class="btn btn-success btn-sm mb-2" asp-area=""
+						asp-controller="Module"
+						asp-action="Add">Add New Module
+						</a>
+					</div>
+				</div>
+				
 				<div>
+					@{var index = 0;}
 					@foreach (var module in Model.Modules)
 					{
+						index += 1;
 						<div class="card">
-							<div class="card-header">
-								<h5>@module.ModuleId</h5>
-									@module.ModuleName
+							<a asp-area=""
+							   asp-controller="Module"
+							   asp-action="ModuleDetailedView"
+							   asp-route-moduleId="@module.ModuleId">
+								<div class="card-header">
+									<h5>@index: @module.ModuleName</h5>
+									@module.ModuleContent
+								</div>
+							</a>
+							<div class="btn-group position-absolute top-0 end-0 m-2">
+								<a class="btn btn-primary btn-sm" asp-area="" asp-controller="Module"
+								asp-action="Edit"
+								asp-route-moduleId="@module.ModuleId">
+									Edit
+								</a>
+								<a class="btn btn-danger btn-sm ms-2" asp-area="" asp-controller="Module"
+								asp-action="Delete"
+								asp-route-moduleId="@module.ModuleId">
+									Delete
+								</a>
 							</div>
 						</div>
 					}					

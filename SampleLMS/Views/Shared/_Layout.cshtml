@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,34 +28,67 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Categories
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="List">View Categories</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Add">Create a Category</a></li>
-                                    @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Courses
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="List">View Courses</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Add">Create a Course</a></li>
-                                    @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categories
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="List">View Categories</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Add">Create a Category</a></li>
+                                        @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="btn bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Courses
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="List">View Courses</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Add">Create a Course</a></li>
+                                        @*<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Something else here</a></li>*@
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        }
                     </ul>
+
+                    <div class="d-flex align-items-center">
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <div class="me-3 text-light">
+                                @User?.Identity?.Name
+                            </div>
+
+                            <a class="btn me-3 bg-light text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Logout">Logout</a>
+                        }
+                        else
+                        {
+                            <a class="btn me-3 bg-light text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Login">Login</a>
+
+                            <a class="btn me-3 bg-light text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Register">Register</a>
+                        }
+
+
+                    </div>
                 </div>
             </div>
         </nav>

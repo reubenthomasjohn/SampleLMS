@@ -18,6 +18,6 @@ namespace SampleLMS.Models.DTOs.Course
 
 		// Navigation Properties
 		public ICollection<DomainModels.Category>? Categories { get; set; }
-		public ICollection<Module>? Modules { get; set; }
+		public ICollection<DomainModels.Module>? Modules { get; set; }
 	}
 }
