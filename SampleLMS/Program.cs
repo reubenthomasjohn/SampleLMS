@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SampleLMS.Dal.Interfaces;
 using SampleLMS.Dal.Repositories;
 using SampleLMS.Data;
+using SampleLMS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddScoped<ICourseInterface, CourseRepository>();
 builder.Services.AddScoped<ICategoryInterface, CategoryRepository>();
 builder.Services.AddScoped<IModuleInterface, ModuleRepository>();
 builder.Services.AddScoped<IUserInterface, UserRepository>();
+builder.Services.AddScoped<IStorageServiceInterface, StorageService>();
 
 var app = builder.Build();
 

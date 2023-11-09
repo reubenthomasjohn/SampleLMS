@@ -1,5 +1,4 @@
-﻿using SampleLMS.Models.DomainModels;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SampleLMS.Models.DTOs.Module
 {
@@ -15,6 +14,7 @@ namespace SampleLMS.Models.DTOs.Module
         // Add a property to store the uploaded file, you may use IFormFile or byte[] based on your requirements.
         // public IFormFile? UploadedFile { get; set; } // This is for handling file uploads.
 
-        public IEnumerable<FilePath>? UploadedFilePaths { get; set; } // Store the paths to the uploaded file on the server.
+        public List<string> UploadedFilePaths { get; set; } = new List<string>();
+
     }
 }

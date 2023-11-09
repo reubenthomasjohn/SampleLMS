@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity;
+
 @model SampleLMS.Models.DTOs.Module.EditModuleRequest
 @{
 }
@@ -32,50 +33,47 @@
             <input type="text" class="form-control" id="contentType" asp-for="ContentType" />
         </div>
 
-        <div class="mb-3">
+        @*<div class="mb-3">
             <label for="formFileMultiple" class="form-label">Upload Files</label>
-            <input class="form-control" type="file" id="formFileMultiple" asp-for="UploadedFilePaths" multiple>
-        </div>
+            <input class="form-control" type="file" id="formFileMultiple" asp-for="UploadedFiles" multiple>
+        </div>*@
+
+        @*<div class="mb-3">
+            <label for="formFileSingle" class="form-label">Upload Files</label>
+            <input class="form-control" type="file" id="formFileSingle" asp-for="UploadedFiles" multiple>
+        </div>*@
+
         <div class="mb-3">
-            <button type="submit" class="btn btn-dark">
+            <button type="submit" id="submit-btn" class="btn btn-dark">
                 Save
             </button>
         </div>
-
     </form>
+
+
+    <form method="post" enctype="multipart/form-data" asp-controller="FileUploads" asp-action="UploadFile">
+        <label for="formFileSingle" class="form-label">Upload Files</label>
+        <div class="mb-3">
+                <span>Select File:</span>
+                <input type="file" name="file" multiple/>
+                <input type="submit" value="Upload" />
+                <br />
+                <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+            </div>
+        </form>
+
+
+
 </div>
+
 
 @section Scripts {
     <script>
-        var editor = new FroalaEditor('#content', {
-            imageUploadURL: '/api/images'
-        });
-
-        const featuredUploadElement = document.getElementById('featuredImageUpload');
-        const featuredImageUrlElement = document.getElementById('featuredImageUrl');
-        const featuredImageDisplayElement = document.getElementById('featuredImageDisplay');
-
-        async function uploadFeaturedImage(e) {
-            console.log(e.target.files[0]);
-
-            let data = new FormData();
-            data.append('file', e.target.files[0]);
-
-            await fetch('/api/images', {
-                method: 'POST',
-                headers: {
-                    'Accept': '*/*',
-                },
-                body: data
-            }).then(response => response.json())
-                .then(result => {
-                    featuredImageUrlElement.value = result.link;
-                    featuredImageDisplayElement.src = result.link;
-                    featuredImageDisplayElement.style.display = 'block';
-                });
-        }
-
-        featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+        var editor = new FroalaEditor('#content');
     </script>
 }
+
+
+
+
 
