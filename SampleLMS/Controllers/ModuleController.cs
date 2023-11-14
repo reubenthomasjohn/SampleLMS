@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SampleLMS.Dal.Interfaces;
 using SampleLMS.Models.DomainModels;
 using SampleLMS.Models.DTOs.Module;
@@ -20,31 +21,69 @@ namespace SampleLMS.Controllers
         public async Task<IActionResult> Edit(int moduleId)
 		{
 			var module = await moduleRepository.GetSingleModuleAsync(moduleId);
+
+			//var coursesLinkedToModule = module.Courses.ToList();
+
+			//var courseIds = new List<int>();
+			//foreach (var course in coursesLinkedToModule)
+			//{
+			//	courseIds.Add(course.CourseId);
+			//}
+
 			var editModuleView = new EditModuleRequest
 			{
+				//CourseIds = courseIds,
 				ModuleId = module.ModuleId,
 				ModuleName = module.ModuleName,
-                ContentType = module.ContentType
+                ContentType = module.ContentType,
+				ModuleContent = module.ModuleContent
             };
 
 			return View(editModuleView);
 		}
 
 		[HttpPost]
-		public IActionResult Edit(EditModuleRequest editModuleRequest)
+		public async Task<IActionResult> Edit(EditModuleRequest editModuleRequest)
         {
-				
+
+			var existingModule = await moduleRepository.GetSingleModuleAsync(editModuleRequest.ModuleId);
+			var coursesLinkedWithModule = existingModule.Courses.ToList();
+
             // map view model back to domain model
             var updatedModule = new Module
 			{
 				ModuleId = editModuleRequest.ModuleId,
 				ModuleName = editModuleRequest.ModuleName,
 				ContentType = editModuleRequest.ContentType,
-			};
+				ModuleContent = editModuleRequest.ModuleContent,
+				UploadedFilePaths = new List<FilePath>(),
+				Courses = coursesLinkedWithModule
+            };
 
-			var fileToBeUploaded = editModuleRequest.UploadedFiles;
+			if (editModuleRequest.UploadedFiles is not null)
+			{
+                // Deserialize the JSON string to get the List<string>
+                List<string> uploadedFilesList = JsonConvert.DeserializeObject<List<string>>(editModuleRequest.UploadedFiles);
+                foreach (var file in uploadedFilesList)
+                {
+                    var filePath = new FilePath
+                    {
+                        Module = updatedModule,
+                        Path = file,
+                        ModuleId = editModuleRequest.ModuleId
+                    };
+                    updatedModule.UploadedFilePaths.Add(filePath);
+                }
+            }
+           
+			var updatedModuleInRepository = moduleRepository.UpdateModuleAsync(updatedModule);
 
-			return View();
+			if (updatedModuleInRepository is not null)
+			{
+				return RedirectToAction("List", "Course");
+            }
+		return View();
+			
 		}
 
 		[HttpGet]

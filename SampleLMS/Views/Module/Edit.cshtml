@@ -28,10 +28,10 @@
             <textarea class="form-control" id="content" asp-for="ModuleContent"></textarea>
         </div>
 
-        <div class="mb-3">
+        @*<div class="mb-3">
             <label class="form-label">Content Type</label>
             <input type="text" class="form-control" id="contentType" asp-for="ContentType" />
-        </div>
+        </div>*@
 
         @*<div class="mb-3">
             <label for="formFileMultiple" class="form-label">Upload Files</label>
@@ -44,6 +44,11 @@
         </div>*@
 
         <div class="mb-3">
+            <label for="UploadedFiles" class="form-label" hidden>Uploaded Files</label>
+            <input type="hidden" id="uploadedFilesList" name="UploadedFiles" asp-for="UploadedFiles" hidden>
+        </div>
+
+        <div class="mb-3">
             <button type="submit" id="submit-btn" class="btn btn-dark">
                 Save
             </button>
@@ -51,27 +56,76 @@
     </form>
 
 
-    <form method="post" enctype="multipart/form-data" asp-controller="FileUploads" asp-action="UploadFile">
+    @*<form method="post" enctype="multipart/form-data" asp-controller="FileUploads" asp-action="UploadFile">
         <label for="formFileSingle" class="form-label">Upload Files</label>
         <div class="mb-3">
                 <span>Select File:</span>
                 <input type="file" name="file" multiple/>
-                <input type="submit" value="Upload" />
+                <input id="uploadInput" type="submit" value="Upload" />
                 <br />
                 <span style="color:green">@Html.Raw(ViewBag.Message)</span>
             </div>
-        </form>
+        <h3 id="uploadFileStatus">No files uploaded...</h3>
+    </form>*@
+
+ <label for="formFileSingle" class="form-label">Upload Files</label>
+    <div class="mb-3">
+        <span>Select Files: </span>
+        <input id="uploadInput" type="file" name="file" multiple />
+        <button id="uploadButton" type="button" onclikc="uploadFiles()">Upload</button>
+        <br />
+        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+    </div>
+    <h3 id="uploadFileStatus">No files uploaded...</h3>
+    </div>
 
 
-
-</div>
-
-
-@section Scripts {
+@*@section Scripts {
     <script>
         var editor = new FroalaEditor('#content');
     </script>
-}
+}*@
+
+<script>
+    var editor = new FroalaEditor('#content', {
+        imageUploadURL: '/api/FileUploads'
+    });
+
+    const uploadFileStatus = document.getElementById('uploadFileStatus');
+    const uploadInput = document.getElementById('uploadInput');
+    const uploadButton = document.getElementById('uploadButton');  // Added this line
+    const aspUploadedFiles = document.getElementById('uploadedFilesList')
+
+    async function uploadFiles() {  // Removed the 'e' parameter
+        const files = uploadInput.files;  // Use the uploadInput directly
+
+        console.log(files);
+
+        let data = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            data.append('files', files[i]);
+        }
+
+        await fetch('/api/FileUploads', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+            },
+            body: data
+        }).then(response => response.json())
+            .then(result => {
+                // Assuming result.links is an array of file URLs
+                uploadFileStatus.innerHTML = result.links.join(', ');
+
+                var filesJson = JSON.stringify(result.links);
+                aspUploadedFiles.value = filesJson;
+            });
+    }
+
+    // Attach the click event to the button
+    uploadButton.addEventListener('click', uploadFiles);
+</script>
+
 
 
 

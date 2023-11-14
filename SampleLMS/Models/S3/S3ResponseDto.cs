@@ -5,5 +5,6 @@ namespace SampleLMS.Models.S3
     {
         public int StatusCode { get; set; } = 200;
         public string Message { get; set; } = "";
+        public List<string> FileURLs { get; set; } = new List<string>();
     }
 }

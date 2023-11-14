@@ -12,3 +12,4 @@ namespace SampleLMS.Models.DTOs.Account
         public string? ReturnUrl { get; set; }
     }
 }
+

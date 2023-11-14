@@ -24,7 +24,7 @@ namespace SampleLMS.Services
             this.userManager = userManager;
         }
 
-        public async Task<S3ResponseDto> UploadFileAsync(IFormFile file)
+        public async Task<S3ResponseDto> UploadFileAsync(List<IFormFile> files)
         {
             
             // specify the region
@@ -33,65 +33,68 @@ namespace SampleLMS.Services
                 RegionEndpoint = Amazon.RegionEndpoint.USEast1
             };
 
-            // process the file
-            await using var memoryStream = new MemoryStream();
-            await file.CopyToAsync(memoryStream);
-
-            var fileExt = Path.GetExtension(file.FileName);
-            var objName = $"{Guid.NewGuid()}.{fileExt}";
-
-            var s3Obj = new Models.S3.S3Object()
-            {
-                BucketName = "dotnet-sample-lms-demo",
-                InputStream = memoryStream,
-                Name = objName
-            };
-
-            var creds = new AwsCredentials()
-            {
-                AwsKey = configuration["AwsConfiguration:AWSAccessKey"],
-                AwsSecretKey = configuration["AwsConfiguration:AWSSecretKey"]
-            };
-
-            // Adding AWS credentials
-            var credentials = new BasicAWSCredentials(creds.AwsKey,
-                                                      creds.AwsSecretKey);
-
             var response = new S3ResponseDto();
-
-            try
+            foreach ( var file in files )
             {
-                var uploadRequest = new TransferUtilityUploadRequest()
+                // process the file
+                await using var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream);
+
+                var fileExt = Path.GetExtension(file.FileName);
+                var objName = $"{Guid.NewGuid()}.{fileExt}";
+
+                var s3Obj = new S3Object()
                 {
-                    InputStream = s3Obj.InputStream,
-                    Key = s3Obj.Name,
-                    BucketName = s3Obj.BucketName,
-                    CannedACL = S3CannedACL.NoACL
+                    BucketName = "dotnet-sample-lms-demo",
+                    InputStream = memoryStream,
+                    Name = objName
                 };
 
-                // created an s3 client
-                using var client = new AmazonS3Client(credentials, config);
 
-                // upload utility to s3
-                var transferUtility = new TransferUtility(client);
+                var creds = new AwsCredentials()
+                {
+                    AwsKey = configuration["AwsConfiguration:AWSAccessKey"],
+                    AwsSecretKey = configuration["AwsConfiguration:AWSSecretKey"]
+                };
 
-                // actually uploading the file to S3
-                await transferUtility.UploadAsync(uploadRequest);
+                // Adding AWS credentials
+                var credentials = new BasicAWSCredentials(creds.AwsKey,
+                                                          creds.AwsSecretKey);
+                try
+                {
+                    var uploadRequest = new TransferUtilityUploadRequest()
+                    {
+                        InputStream = s3Obj.InputStream,
+                        Key = s3Obj.Name,
+                        BucketName = s3Obj.BucketName,
+                        CannedACL = S3CannedACL.NoACL
+                    };
+                    var s3URL = $"https://{s3Obj.BucketName}.s3.amazonaws.com/{uploadRequest.Key}";
 
-                response.StatusCode = 200;
-                response.Message = $"{s3Obj.Name} has been uploaded successfully";
+                    // created an s3 client
+                    using var client = new AmazonS3Client(credentials, config);
+
+                    // upload utility to s3
+                    var transferUtility = new TransferUtility(client);
+
+                    // actually uploading the file to S3
+                    await transferUtility.UploadAsync(uploadRequest);
+
+                    response.StatusCode = 200;
+                    response.Message = $"{s3Obj.Name} has been uploaded successfully";
+                    response.FileURLs.Add(s3URL);
+                }
+                catch (AmazonS3Exception ex)
+                {
+                    response.StatusCode = (int)ex.StatusCode;
+                    response.Message = $"Amazon S3 Exception: {ex.Message}";
+                }
+                catch (Exception ex)
+                {
+                    response.StatusCode = 500;
+                    response.Message = ex.Message;
+                }
             }
-            catch (AmazonS3Exception ex)
-            {
-                response.StatusCode = (int)ex.StatusCode;
-                response.Message = $"Amazon S3 Exception: {ex.Message}";
-            }
-            catch (Exception ex)
-            {
-                response.StatusCode = 500;
-                response.Message = ex.Message;
-            }
-
             return response;
         }
     }

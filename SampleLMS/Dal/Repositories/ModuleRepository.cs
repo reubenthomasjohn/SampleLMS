@@ -61,6 +61,7 @@ namespace SampleLMS.Dal.Repositories
         {
             return await dbContext.Modules
                 .Include(m => m.Courses)
+                .Include(fp => fp.UploadedFilePaths)
                 .FirstOrDefaultAsync(x => x.ModuleId == id);
         }
 
@@ -75,9 +76,9 @@ namespace SampleLMS.Dal.Repositories
                 existingModule.ModuleContent = module.ModuleContent;
                 existingModule.ContentType = module.ContentType;
                 existingModule.UploadedFilePaths = module.UploadedFilePaths;
+                existingModule.Courses = module.Courses;
 
                 await dbContext.SaveChangesAsync();
-
                 return existingModule;
             }
 

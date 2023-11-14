@@ -16,11 +16,12 @@ namespace SampleLMS.Controllers
         }
 
         [HttpPost(Name = "UploadFile")]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        public async Task<IActionResult> UploadFile(List<IFormFile> files)
         {
-            var result = await _storageService.UploadFileAsync(file);
+            var result = await _storageService.UploadFileAsync(files);
 
-            return Ok(result);
+            //return Ok(result.FileURLs);
+            return new JsonResult(new { links = result.FileURLs });
         }
 
 

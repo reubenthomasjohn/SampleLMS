@@ -4,6 +4,7 @@ namespace SampleLMS.Models.DTOs.Module
 {
 	public class EditModuleRequest
 	{
+        //public List<int> CourseIds { get; set; } = new List<int>();
         public int ModuleId { get; set; }
         [Required]
 		public string ModuleName { get; set; } = string.Empty;
@@ -14,7 +15,6 @@ namespace SampleLMS.Models.DTOs.Module
         // Add a property to store the uploaded file, you may use IFormFile or byte[] based on your requirements.
         // public IFormFile? UploadedFile { get; set; } // This is for handling file uploads.
 
-        public List<string> UploadedFilePaths { get; set; } = new List<string>();
-
+        public string UploadedFiles { get; set; } = string.Empty;
     }
 }
